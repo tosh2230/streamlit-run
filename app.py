@@ -61,12 +61,18 @@ def show(df):
     box_plot = px.box(df_filtered, y=list(df_filtered.columns), width=graph_width, title='Box plot')
     st.write(box_plot)
 
-    histogram = px.histogram(df_filtered, nbins=bins, width=graph_width, title='Histogram: ALL')
+    histogram = px.histogram(df_filtered, nbins=bins, width=graph_width, opacity=0.5, barmode="relative", title='Histogram: relative')
+    histogram.update_layout(bargap=0.1)
     st.write(histogram)
 
-    for col in list(df_filtered.columns):
-        hist_fig = px.histogram(df_filtered[col], x=col, nbins=bins, width=graph_width, title=f'Histogram: {col}')
-        st.write(hist_fig)
+    histogram = px.histogram(df_filtered, nbins=bins, width=graph_width, opacity=0.5, barmode="overlay", title='Histogram: overlay')
+    histogram.update_layout(bargap=0.1)
+    st.write(histogram)
+
+
+    # for col in list(df_filtered.columns):
+    #     hist_fig = px.histogram(df_filtered[col], x=col, nbins=bins, width=graph_width, opacity=0.5, title=f'Histogram: {col}')
+    #     st.write(hist_fig)
 
 if __name__ == '__main__':
     show(create_df())
