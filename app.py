@@ -5,6 +5,8 @@ import pandas as pd
 import plotly.express as px
 
 row_size = 1000
+graph_width = 750
+bins = 20
 
 def create_df():
     return pd.DataFrame(np.random.rand(row_size, 5), columns=['a', 'b', 'c', 'd', 'e'])
@@ -51,17 +53,19 @@ def show(df):
     with st.beta_expander('Show details'):
         st.dataframe(df_filtered, width=750, height=details_window_length)
 
-    line_chart = px.line(df_filtered, title='Line chart')
+    st.header('Graphs')
+
+    line_chart = px.line(df_filtered, width=graph_width, title='Line chart')
     st.write(line_chart)
 
-    box_plot = px.box(df_filtered, y=list(df_filtered.columns), title='Box plot')
+    box_plot = px.box(df_filtered, y=list(df_filtered.columns), width=graph_width, title='Box plot')
     st.write(box_plot)
 
-    histogram = px.histogram(df_filtered, nbins=20, width=750, title='Histogram: ALL')
+    histogram = px.histogram(df_filtered, nbins=bins, width=graph_width, title='Histogram: ALL')
     st.write(histogram)
 
     for col in list(df_filtered.columns):
-        hist_fig = px.histogram(df_filtered[col], x=col, nbins=20, width=750, title=f'Histogram: {col}')
+        hist_fig = px.histogram(df_filtered[col], x=col, nbins=bins, width=graph_width, title=f'Histogram: {col}')
         st.write(hist_fig)
 
 if __name__ == '__main__':
