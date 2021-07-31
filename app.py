@@ -9,26 +9,30 @@ def create_df():
 
 def show(df):
     num = 400
-    texts = 'Sample DataFrame'
-    multi_num = (0, 250)
+    title = 'Sample DataFrame'
     selected_charactor = 'Tom'
+    dt_now = datetime.now()
+    dt_str = dt_now.strftime('%Y-%m-%d %H:%M:%S')
+    date_str = dt_now.strftime('%Y-%m-%d')
+    time_str = dt_now.strftime('%H:%M:%S')
     selected_items = list(df.columns.values)
+    num = 250
+    multi_num = (0, 250)
 
     is_checked = st.sidebar.checkbox('Select parameters', value=False)
 
     if is_checked:
         selected_charactor = st.sidebar.selectbox('Select a charactor', ['Tom', 'Jerry'])
+        date_str = st.sidebar.date_input("Pick a date")
+        time_str = st.sidebar.time_input("Pick a time")
         title = st.sidebar.text_input("Write a title", value='Sample DataFrame')
-        selected_items = st.sidebar.multiselect('Select columns', list(df.columns.values), default=list(df.columns.values))
-        date = st.sidebar.date_input("Pick a date")
-        time = st.sidebar.time_input("Pick a time")
-        num = st.sidebar.slider("Pick a row size", 0, 500, 250)
-        multi_num = st.sidebar.slider("Pick row range", 0, 250, (0, 250))
+        selected_items = st.sidebar.multiselect('Select columns', list(df.columns.values), selected_items)
+        num = st.sidebar.slider("Pick a row size", 0, 500, num)
+        multi_num = st.sidebar.slider("Pick row range", 0, 250, multi_num)
 
     st.header(f'Hello, {selected_charactor}!')
-    dt_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    st.write(f'Now: {dt_now}')
-    st.write(f'Selected: {date} {time}')
+    st.write(f'Now: {dt_str}')
+    st.write(f'Selected: {date_str} {time_str}')
     df_filtered = df.loc[multi_num[0]:multi_num[1], selected_items]
 
     st.title(title)
