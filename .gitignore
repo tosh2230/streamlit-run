@@ -130,3 +130,9 @@ dmypy.json
 
 # poetry
 poetry.lock
+
+# terraform
+*.tfvars
+*.tfbackend
+.terraform.lock.hcl
+.terraform
