@@ -17,11 +17,17 @@ resource "google_service_account" "sa_streamlit_run" {
   display_name = "sa-streamlit-run"
 }
 
+# resource "google_project_iam_binding" "streamlit_run_bq_user" {
+#   project = var.project
+#   role    = "roles/bigquery.user"
+#   members = ["serviceAccount:${google_service_account.sa_streamlit_run.email}"]
+# }
+
 ##############################################
 # Cloud Run
 ##############################################
 resource "google_cloud_run_service" "streamlit_run" {
-  name     = "streamlit_run"
+  name     = "streamlit-run"
   location = var.region
   template {
     spec {
@@ -37,10 +43,24 @@ resource "google_cloud_run_service" "streamlit_run" {
   }
 }
 
-resource "google_project_iam_binding" "streamlit_run_bq_user" {
-  project = var.project
-  role    = "roles/bigquery.user"
-  members = ["serviceAccount:${google_service_account.sa_streamlit_run.email}"]
+# Enable public access on Cloud Run service
+resource "google_cloud_run_service_iam_policy" "noauth" {
+  location    = google_cloud_run_service.streamlit_run.location
+  project     = google_cloud_run_service.streamlit_run.project
+  service     = google_cloud_run_service.streamlit_run.name
+  policy_data = data.google_iam_policy.noauth.policy_data
+}
+
+##############################################
+# Cloud IAM
+##############################################
+data "google_iam_policy" "noauth" {
+  binding {
+    role = "roles/run.invoker"
+    members = [
+      "allUsers",
+    ]
+  }
 }
 
 ##############################################
