@@ -1,1 +1,5 @@
-poetry
+wheel
+streamlit
+plotly
+watchdog
+Cython

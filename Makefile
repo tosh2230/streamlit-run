@@ -14,3 +14,10 @@ run-local:
 		-e PORT=${container_port} \
 		-p ${host_port}:${container_port} \
 		streamlit-run | sed -e "s/${container_port}/${host_port}/g"
+
+run-test:
+	@docker run --rm \
+		--name streamlit-run \
+		-e PORT=${container_port} \
+		-p ${host_port}:${container_port} \
+		gcr.io/alert-tine-289008/streamlit_run | sed -e "s/${container_port}/${host_port}/g"
