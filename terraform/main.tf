@@ -37,6 +37,11 @@ resource "google_cloud_run_service" "streamlit_run" {
       service_account_name = google_service_account.sa_streamlit_run.email
     }
   }
+  metadata {
+    annotations = {
+      "run.googleapis.com/ingress" = "internal-and-cloud-load-balancing"
+    }
+  }
   traffic {
     percent         = 100
     latest_revision = true
