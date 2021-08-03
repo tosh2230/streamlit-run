@@ -48,26 +48,6 @@ resource "google_cloud_run_service" "streamlit_run" {
   }
 }
 
-# Enable public access on Cloud Run service
-resource "google_cloud_run_service_iam_policy" "noauth" {
-  location    = google_cloud_run_service.streamlit_run.location
-  project     = google_cloud_run_service.streamlit_run.project
-  service     = google_cloud_run_service.streamlit_run.name
-  policy_data = data.google_iam_policy.noauth.policy_data
-}
-
-##############################################
-# Cloud IAM
-##############################################
-data "google_iam_policy" "noauth" {
-  binding {
-    role = "roles/run.invoker"
-    members = [
-      "allUsers",
-    ]
-  }
-}
-
 ##############################################
 # Output
 ##############################################
