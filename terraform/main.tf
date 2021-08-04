@@ -33,6 +33,12 @@ resource "google_cloud_run_service" "streamlit_run" {
     spec {
       containers {
         image = "gcr.io/${var.project}/streamlit_run"
+        resources {
+          limits = {
+            "cpu" : "1000m"
+            "memory" : "256Mi"
+          }
+        }
       }
       service_account_name = google_service_account.sa_streamlit_run.email
     }
