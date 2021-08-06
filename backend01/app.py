@@ -40,7 +40,7 @@ def show(df):
         graph_width = st.sidebar.number_input("Set graph width", 0, 1000, graph_width)
         histogram_mode = st.sidebar.selectbox('Select a histogram mode', ['relative', 'overlay'], index=0)
 
-        with st.sidebar.beta_expander('Show others'):
+        with st.sidebar.expander('Show others'):
             date_str = st.date_input("Pick a date")
             time_str = st.time_input("Pick a time")
             title = st.text_input("Change a title text", value=title)
@@ -81,7 +81,7 @@ def show(df):
     scatter = px.scatter(df_filtered, height=graph_height, width=graph_width, opacity=0.5, title='Scatter plot')
     st.write(scatter)
 
-    df_iris = df = px.data.iris()
+    df_iris = px.data.iris()
     scatter_matrix = px.scatter_matrix(df_iris, dimensions=["sepal_width", "sepal_length", "petal_width", "petal_length"], color="species", height=graph_height, width=graph_width, opacity=0.5, title='Scatter matrix (Iris)')
     st.write(scatter_matrix)
 

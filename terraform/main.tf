@@ -54,23 +54,6 @@ resource "google_cloud_run_service" "streamlit_run_default" {
   }
 }
 
-# # Enable public access on Cloud Run service
-# resource "google_cloud_run_service_iam_policy" "noauth" {
-#   location    = google_cloud_run_service.streamlit_run_default.location
-#   project     = google_cloud_run_service.streamlit_run_default.project
-#   service     = google_cloud_run_service.streamlit_run_default.name
-#   policy_data = data.google_iam_policy.noauth.policy_data
-# }
-
-# data "google_iam_policy" "noauth" {
-#   binding {
-#     role = "roles/run.invoker"
-#     members = [
-#       "allUsers",
-#     ]
-#   }
-# }
-
 resource "google_cloud_run_service" "streamlit_run_backend01" {
   name     = "streamlit-run-backend01"
   location = var.region
@@ -144,23 +127,6 @@ resource "google_compute_managed_ssl_certificate" "cert" {
 resource "google_compute_url_map" "urlmap" {
   name            = "${var.lb_name}-lb"
   default_service = google_compute_backend_service.backend_default.id
-  # host_rule {
-  #   hosts        = ["${var.lb-domain}"]
-  #   path_matcher = "streamlit"
-  # }
-  # path_matcher {
-  #   name            = "streamlit"
-  #   default_service = google_compute_backend_service.backend_default.id
-
-  #   path_rule {
-  #     paths   = ["/backend01"]
-  #     service = google_compute_backend_service.backend_01.id
-  #   }
-  #   path_rule {
-  #     paths   = ["/backend02"]
-  #     service = google_compute_backend_service.backend_02.id
-  #   }
-  # }
 }
 
 resource "google_compute_target_https_proxy" "https_proxy" {
@@ -184,7 +150,6 @@ resource "google_compute_region_network_endpoint_group" "neg_default" {
   network_endpoint_type = "SERVERLESS"
   region                = var.region
   cloud_run {
-    # service = google_cloud_run_service.streamlit_run_default.name
     url_mask = "${var.lb-domain}/<service>"
   }
 }
@@ -218,10 +183,6 @@ resource "google_iap_web_backend_service_iam_binding" "binding_default" {
 ##############################################
 # Output
 ##############################################
-output "streamlit_run_url" {
-  value = google_cloud_run_service.streamlit_run_default.status[0].url
-}
-
 output "load_balancer_ip" {
   value = google_compute_global_address.address.address
 }

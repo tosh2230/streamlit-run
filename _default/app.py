@@ -48,7 +48,7 @@ def show(df):
     # Title
     st.title(title)
 
-    col1, col2 = st.columns(2)
+    col1, col2 = st.beta_columns(2)
     with col1:
         st.write(f'Now: {dt_str}')
     with col2:
@@ -58,10 +58,10 @@ def show(df):
     st.header('DataFrame')
     df_filtered = df.loc[multi_num[0]:multi_num[1], selected_items]
 
-    with st.expander('Show describe'):
+    with st.beta_expander('Show describe'):
         st.dataframe(df_filtered.describe(), height=250, width=graph_width)
 
-    with st.expander('Show details'):
+    with st.beta_expander('Show details'):
         details_window_length = st.slider("Set window size", 0, 500, details_window_length)
         st.dataframe(df_filtered, height=details_window_length, width=graph_width)
 
@@ -81,7 +81,7 @@ def show(df):
     scatter = px.scatter(df_filtered, height=graph_height, width=graph_width, opacity=0.5, title='Scatter plot')
     st.write(scatter)
 
-    df_iris = df = px.data.iris()
+    df_iris = px.data.iris()
     scatter_matrix = px.scatter_matrix(df_iris, dimensions=["sepal_width", "sepal_length", "petal_width", "petal_length"], color="species", height=graph_height, width=graph_width, opacity=0.5, title='Scatter matrix (Iris)')
     st.write(scatter_matrix)
 
