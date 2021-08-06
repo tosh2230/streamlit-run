@@ -1,0 +1,5 @@
+wheel
+streamlit
+plotly
+watchdog
+Cython
