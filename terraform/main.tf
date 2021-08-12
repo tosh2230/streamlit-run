@@ -36,11 +36,18 @@ resource "google_cloud_run_service" "streamlit_run_default" {
         resources {
           limits = {
             "cpu" : "1000m"
-            "memory" : "512Mi"
+            "memory" : "1024Mi"
           }
         }
       }
+      container_concurrency = "4"
       service_account_name = google_service_account.sa_streamlit_run.email
+    }
+    metadata {
+      annotations = {
+        "autoscaling.knative.dev/maxScale"      = "10"
+        "autoscaling.knative.dev/minScale"      = "0"
+      }
     }
   }
   metadata {
