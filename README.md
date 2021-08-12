@@ -6,9 +6,25 @@ This is sample-codes for [Streamlit](https://streamlit.io/) apps on Cloud Run wi
 
 ## Usage
 
-```sh
-make build-gcr
-cd ./terraform
-terraform plan
-terraform apply
-```
+1. Create a `terraform.tfvars` file.
+
+    ```
+    project                  = "****************"
+    region                   = "us-central1"
+    zone                     = "us-central1-a"
+    iap_client_id            = "****************"
+    iap_client_secret        = "****************"
+    lb-domain                = "your.domain.com"
+    iapHttpsResourceAccessor = "set a google account"
+    ```
+
+1. Execute commands below.
+
+    ```sh
+    make build-gcr
+    cd ./terraform
+    terraform plan
+    terraform apply
+    ```
+
+1. Set the IP address output as `load_balancer_ip` to DNS that manages your domain.
