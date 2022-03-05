@@ -2,13 +2,13 @@
 name = "streamlit-run"
 version = "0.1.0"
 description = ""
-authors = ["tosh223 <rev.to12@gmail.com>"]
+authors = ["tosh2230 <rev.to12@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8"
 wheel = "^0.36.2"
-streamlit = "^0.85.1"
+streamlit = "^1.0.0"
 plotly = "^5.1.0"
 watchdog = "^2.1.3"
 Cython = "^0.29.24"

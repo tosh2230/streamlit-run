@@ -117,6 +117,41 @@ resource "google_cloud_run_service" "streamlit_run_backend02" {
   }
 }
 
+resource "google_cloud_run_service" "streamlit_run_sample" {
+  name     = "streamlit-run-sample"
+  location = var.region
+  template {
+    spec {
+      containers {
+        image = "gcr.io/cloudrun/hello"
+        resources {
+          limits = {
+            "cpu" : "1000m"
+            "memory" : "512Mi"
+          }
+        }
+      }
+      container_concurrency = "1"
+      service_account_name  = google_service_account.sa_streamlit_run.email
+    }
+    metadata {
+      annotations = {
+        "autoscaling.knative.dev/maxScale" = "1"
+        "autoscaling.knative.dev/minScale" = "0"
+      }
+    }
+  }
+  metadata {
+    annotations = {
+      "run.googleapis.com/ingress" = "internal-and-cloud-load-balancing"
+    }
+  }
+  traffic {
+    percent         = 100
+    latest_revision = true
+  }
+}
+
 ##############################################
 # Cloud Load Balancing
 ##############################################
